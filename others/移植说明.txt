@@ -1,0 +1,14 @@
+1、MYSQL方面的移植
+2、rootdir的更改
+
+
+后台启动程序示例：
+nohup ./webserver > /dev/null 2>&1 &
+nohup python3 videoServerNo_IP.py  > video.log 2>&1 &
+
+
+自启动程序示例：(webserver那个失败了)
+nohup ./webserver > /dev/null 2>&1 &
+
+/usr/bin/nohup /root/ubuntu_TinyWebServer-raw_version/webserver  > /dev/null 2> /dev/null &
+/usr/bin/nohup /usr/bin/python3 /root/videoServerNo_IP.py  > /root/video.log 2>&1 &

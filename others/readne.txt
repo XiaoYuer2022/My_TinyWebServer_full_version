@@ -1,0 +1,4 @@
+注意： 先启动服务器，在启动视频发送端send，最后才启动视频接收端recv。 
+2023-02-15  测试：先运行服务器，在运行recv，最后运行send
+1、windows服务器要配置python环境
+2、安装opencv-python模块包

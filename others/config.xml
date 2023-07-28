@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+	<SYS>
+        <ServerPort>9999</ServerPort>
+	</SYS>
+    <LOG>
+        <DEBUG_OPEN>1</DEBUG_OPEN>
+	</LOG>
+    <MYSQL>
+        <mysql_url>"localhost"</mysql_url>
+        <mysql_user>"yuhao"</mysql_user>
+        <mysql_passwd>"508506630.yh"</mysql_passwd>
+        <mysql_DBname>"mydb"</mysql_DBname>
+        <mysql_port>3380</mysql_port>
+        <mysql_MaxConn>8</mysql_MaxConn>
+	</MYSQL>
+    <ROOTFILE>
+        <doc_root>"/home/ubuntu/webserver_haoxx/root"</doc_root>
+    </ROOTFILE>
+</root>
+
+<!-- 如果设置了connfdLT不为0,则开启“边缘触发非阻塞”,否则开启"connfdET";
+如果设置了listenfdLT不为0,则开启“边缘触发非阻塞”,否则开启"listenfdET";
+
+如果设置了ASYNLOG不为0,则开启“异步日志”,否则开启"SYNLOG"同步日志;
+
+ServerPort、mysql_port和mysql_MaxConn都是整数，MYSQL的其他设置和doc_root是字符串 -->
+
+
+<!-- <root>
+	<SYS>
+        <connfdLT>1</connfdLT>
+        <connfdET>0</connfdET>
+        <listenfdLT>1</listenfdLT>
+        <listenfdET>0</listenfdET>
+        <ServerPort>9999</ServerPort>
+	</SYS>
+    <LOG>
+        <ASYNLOG>1</ASYNLOG>
+        <SYNLOG>0</SYNLOG>
+        <DEBUG_OPEN>1</DEBUG_OPEN>
+	</LOG>
+    <MYSQL>
+        <mysql_url>"localhost"</mysql_url>
+        <mysql_user>"yuhao"</mysql_user>
+        <mysql_passwd>"508506630.yh"</mysql_passwd>
+        <mysql_DBname>"mydb"</mysql_DBname>
+        <mysql_port>3380</mysql_port>
+        <mysql_MaxConn>8</mysql_MaxConn>
+	</MYSQL>
+    <ROOTFILE>
+        <doc_root>"/home/ubuntu/webserver/root"</doc_root>
+    </ROOTFILE>
+</root> -->

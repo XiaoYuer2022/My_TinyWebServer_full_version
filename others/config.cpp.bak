@@ -1,0 +1,99 @@
+
+#include "mxml.h"
+#include <iostream>
+#include "config.h"
+
+void Config_Setting()
+{
+	FILE* fp;
+	char Car_Id[9];
+	//读取配置文件
+	mxml_node_t *xml, *sys, *title;
+	fp = fopen("config.xml","r");
+	if(fp == NULL)
+	{
+		printf("open obu.xml failed! ---- %s::%s->%d", __FILE__, __FUNCTION__, __LINE__);
+		exit(1);
+	}
+	xml = mxmlLoadFile( NULL, fp, MXML_TEXT_CALLBACK);
+	fclose(fp);
+	// SYS 系统基本配置
+	sys = mxmlFindElement( xml, xml, "SYS", NULL, NULL, MXML_DESCEND);
+	title = mxmlFindElement( sys, xml, "connfdLT", NULL, NULL, MXML_DESCEND);
+	if(mxmlGetText( title, NULL) != NULL && atoi(mxmlGetText( title, NULL)) != 0 ) {
+		printf("connfdLT=%d  已设置为水平触发阻塞\n",atoi(mxmlGetText( title, NULL)));
+		#define connfdLT_TEST //水平触发阻塞
+	} else {
+		printf("已设置为边缘触发\n");
+		#define connfdET_TEST //边缘触发非阻塞
+	}
+
+	title = mxmlFindElement( sys, xml, "listenfdLT", NULL, NULL, MXML_DESCEND);
+	if(mxmlGetText( title, NULL) != NULL && atoi(mxmlGetText( title, NULL)) != 0 ) {
+		printf("listenfdLT=%d  已设置为水平触发\n",atoi(mxmlGetText( title, NULL)));
+		#define listenfdLT_TEST //水平触发阻塞
+	} else {
+		printf("已设置为边缘触发\n");
+		#define listenfdET_TEST //边缘触发非阻塞
+	}
+		
+	title = mxmlFindElement(sys, xml, "ServerPort", NULL, NULL, MXML_DESCEND);
+	if(mxmlGetText( title, NULL) != NULL)
+		printf("设置端口：port=%d\n",atoi(mxmlGetText(title, NULL)));
+	
+	
+	// LOG 日志属性配置
+	sys = mxmlFindElement( xml, xml, "LOG", NULL, NULL, MXML_DESCEND);
+	title = mxmlFindElement( sys, xml, "ASYNLOG", NULL, NULL, MXML_DESCEND);
+	if(mxmlGetText( title, NULL) != NULL && atoi(mxmlGetText( title, NULL)) != 0 ) {
+		printf("ASYNLOG=%d  已设置为异步日志\n",atoi(mxmlGetText( title, NULL)));
+		#define ASYNLOG_TEST   //异步模式，服务器操作与日志写入在不同线程，使用阻塞队列等线程同步机制实现日志数据的传输
+	} else {
+		printf("已设置为边缘触发\n");
+		#define SYNLOG_TEST      //同步模式，必须先写完日志才能进行后续操作；
+	}
+	title = mxmlFindElement( sys, xml, "DEBUG_OPEN", NULL, NULL, MXML_DESCEND);
+	if(mxmlGetText( title, NULL) != NULL && atoi(mxmlGetText( title, NULL)) != 0 ) {
+		printf("DEBUG_OPEN=%d  已设置为debug模式\n",atoi(mxmlGetText( title, NULL)));
+		#define DEBUG_OPEN_TEST   
+	} else {
+		printf("release模式\n");
+	}
+
+
+	// MYSQL 数据库属性配置
+	sys = mxmlFindElement( xml, xml, "MYSQL", NULL, NULL, MXML_DESCEND);
+	title = mxmlFindElement( sys, xml, "mysql_url", NULL, NULL, MXML_DESCEND);
+	if(mxmlGetText( title, NULL) != NULL) {
+		printf("mysql_url=%s\n",(mxmlGetText( title, NULL)));
+	} 
+	title = mxmlFindElement( sys, xml, "mysql_user", NULL, NULL, MXML_DESCEND);
+	if(mxmlGetText( title, NULL) != NULL) {
+		printf("mysql_user=%s\n",(mxmlGetText( title, NULL)));
+	}
+	title = mxmlFindElement( sys, xml, "mysql_passwd", NULL, NULL, MXML_DESCEND);
+	if(mxmlGetText( title, NULL) != NULL) {
+		printf("mysql_passwd=%s\n",(mxmlGetText( title, NULL)));
+	}
+	title = mxmlFindElement( sys, xml, "mysql_DBname", NULL, NULL, MXML_DESCEND);
+	if(mxmlGetText( title, NULL) != NULL) {
+		printf("mysql_DBname=%s\n",(mxmlGetText( title, NULL)));
+	}
+	title = mxmlFindElement( sys, xml, "mysql_port", NULL, NULL, MXML_DESCEND);
+	if(mxmlGetText( title, NULL) != NULL) {
+		printf("mysql_port=%s\n",(mxmlGetText( title, NULL)));
+	}	
+	title = mxmlFindElement( sys, xml, "mysql_MaxConn", NULL, NULL, MXML_DESCEND);
+	if(mxmlGetText( title, NULL) != NULL) {
+		printf("mysql_MaxConn=%s\n",(mxmlGetText( title, NULL)));
+	}
+
+	// ROOTFILE 根文件路径配置
+	sys = mxmlFindElement( xml, xml, "ROOTFILE", NULL, NULL, MXML_DESCEND);
+	title = mxmlFindElement( sys, xml, "doc_root", NULL, NULL, MXML_DESCEND);
+	if(mxmlGetText( title, NULL) != NULL) {
+		printf("doc_root=%s\n",(mxmlGetText( title, NULL)));
+	} 
+
+	mxmlDelete(xml);
+}
